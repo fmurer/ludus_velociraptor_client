@@ -1,0 +1,11 @@
+---
+
+  - name: Setup Velociraptor Agent on Windows
+    ansible.builtin.include_tasks:
+      file: install_windows.yml
+    when: ansible_os_family == "Windows"
+
+  - name: Setup Velociraptor Agent on Linux
+    ansible.builtin.include_tasks:
+      file: install_linux.yml
+    when: ansible_os_family == "Ubuntu" or ansible_os_family == "Debian"

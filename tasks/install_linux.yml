@@ -1,0 +1,24 @@
+---
+
+  - name: "Download Velociraptor Client"
+    ansible.builtin.get_url:
+      url: "https://github.com/Velocidex/velociraptor/releases/download/{{ velociraptor_version }}/velociraptor-{{ velociraptor_version_patch }}-linux-amd64"
+      dest: "~/velociraptor"
+      owner: root
+      group: root
+      mode: '0750'
+
+  - name: Get Client Config
+    ansible.builtin.copy:
+      src: "/tmp/client.config.yaml"
+      dest: "~/client.config.yaml"
+
+  - name: Generate Client Installation Package
+    ansible.builtin.shell: "~/velociraptor --config ~/client.config.yaml debian client --output ~/velociraptor_client.deb"
+    args:
+      creates: "~/velociraptor_client.deb"
+    register: velociraptor_client_binary
+
+  - name: Install Velociraptor Agent
+    ansible.builtin.apt:
+      deb: "~/velociraptor_client.deb"

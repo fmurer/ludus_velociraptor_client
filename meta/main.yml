@@ -1,0 +1,20 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: ludus_velociraptor_client
+  author: fmurer
+  description: An Ansible Role that installs Velociratpor Client on a Windows or Linux system.
+  license: GPLv3
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - "all"
+    - name: Windows
+      versions:
+        - "all"
+  galaxy_tags:
+    - velociraptor
+
+collections: [] # Add any collections needed here
