@@ -1,4 +1,4 @@
-# Ansible Role: {{ Thing }} ([Ludus](https://ludus.cloud))
+# Ansible Role: Velociraptor Agent Deployment
 
 An Ansible Role that installs [Velociraptor](https://docs.velociraptor.app/) as an agent.
 
