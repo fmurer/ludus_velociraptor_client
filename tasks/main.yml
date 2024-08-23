@@ -1,4 +1,8 @@
 ---
+  - name: Get the Velociraptor Client Config
+    ansible.builtin.include_tasks:
+      file: get_client_config.yml
+    when: velociraptor_client_config == ""
 
   - name: Setup Velociraptor Agent on Windows
     ansible.builtin.include_tasks:

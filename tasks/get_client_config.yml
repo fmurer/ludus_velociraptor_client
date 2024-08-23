@@ -1,0 +1,36 @@
+---
+# Source: https://github.com/badsectorlabs/ludus_elastic_agent/blob/main/tasks/get_token.yml
+
+  - name: Find VM with ludus_velociraptor_server as a direct role
+    ansible.builtin.set_fact:
+      ludus_velociraptor_server_vm: "{{ ludus | selectattr('roles', 'defined') | selectattr('roles', 'contains', 'ludus_velociraptor_server') | first | default('') }}"
+
+  - name: Find VM with ludus_velociraptor_server as a named role if not found directly
+    ansible.builtin.set_fact:
+      ludus_velociraptor_server_vm: >-
+            {{ ludus |
+              json_query("[?contains(roles[].name, 'ludus_velociraptor_server')]") |
+              first |
+              default(omit) }}
+    when: ludus_velociraptor_server_vm | length == 0
+
+  - name: Fail if no elastic server VM found
+    ansible.builtin.fail:
+      msg: "Could not find any VM that has the *.ludus_velociraptor_server role in your config"
+    when: ludus_velociraptor_server_vm is undefined or ludus_velociraptor_server_vm | length == 0
+
+  - name: Get the Client Config from the server
+    ansible.builtin.slurp:
+      path: "{{ velociraptor_install_path }}/client.config.yaml"
+    register: client_config_slurp
+    delegate_to: "{{ ludus_velociraptor_server_vm.vm_name }}"
+    ignore_errors: true
+
+  - name: Fail if we didn't get a token
+    ansible.builtin.fail:
+      msg: "Unable to get an enrollment token from {{ ludus_velociraptor_server_vm.vm_name }}"
+    when: client_config_slurp.failed
+
+  - name: Set the token
+    ansible.builtin.set_fact:
+      velociraptor_client_config: "{{ client_config_slurp['content'] | b64decode }}"
