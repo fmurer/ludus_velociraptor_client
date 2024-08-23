@@ -10,7 +10,7 @@
 
   - name: Get Client Config
     ansible.builtin.copy:
-      src: "/tmp/client.config.yaml"
+      content: "{{ velociraptor_client_config }}"
       dest: "~/client.config.yaml"
 
   - name: Generate Client Installation Package

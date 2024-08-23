@@ -11,7 +11,7 @@
 
   - name: Copy Client Config to VM
     ansible.windows.win_copy:
-      src: "/tmp/client.config.yaml"
+      content: "{{ velociraptor_client_config }}"
       dest: "C:\\ludus\\client.config.yaml"
 
   - name: Install Velociraptor Agent

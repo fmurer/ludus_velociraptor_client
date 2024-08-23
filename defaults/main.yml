@@ -2,3 +2,8 @@
 
 velociraptor_version: "v0.72"
 velociraptor_version_patch: "v0.72.0"
+
+velociraptor_client_config: ""
+
+# Install Path on the Velociraptor Server - Used to get the Client Config
+velociraptor_install_path: '/opt/velociraptor'
